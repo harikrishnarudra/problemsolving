@@ -1,20 +1,21 @@
 class Solution {
     public boolean removeOnes(int[][] grid) {
         int[] first = grid[0];
-        int[] r_first = Arrays.stream(first).map(i -> 1-i).toArray();
         for(int i=1;i<grid.length;i++){
-            if(!areBothSame(first,grid[i]) && !areBothSame(r_first, grid[i])){
+            if(!isValid(first,grid[i] )){
                 return false;
             }
         }
         return true;
     }
-    private boolean areBothSame(int[] f, int[] s){
-        for(int i=0;i<f.length; i++){
-            if(f[i]!=s[i]){
-                return false;
-            }
+    private boolean isValid(int[] first, int[] current) {
+        int result = 0;
+        for (int i = 0; i < first.length; i++) {
+            result += first[i] ^ current[i];
         }
-        return true;
+        if (result == 0 || result == first.length)
+            return true;
+        else
+            return false;
     }
 }
