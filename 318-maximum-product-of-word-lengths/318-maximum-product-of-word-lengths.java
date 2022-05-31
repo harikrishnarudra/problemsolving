@@ -5,24 +5,23 @@ class Solution {
     }
     
     public int maxProduct(String[] words) {
+        
+        Map<Integer, Integer> map = new HashMap<>();
         int n = words.length;
-        int[] masks = new int[n];
-        int[] lens = new int[n];
-        for(int i=0;i<n;i++){
+        for (int i = 0; i < n; i++) {
             String w = words[i];
             int bitmask = 0;
-            for(char ch:w.toCharArray()){
+            for (char ch : w.toCharArray()) {
                 bitmask |= 1 << bitNumber(ch);
             }
-            masks[i] = bitmask;
-            lens[i] = w.length();
+            map.put(bitmask, Math.max(map.getOrDefault(bitmask, 0), w.length()));
         }
 
         int maxProd = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                if((masks[i] &   masks[j]) == 0){
-                    maxProd = Math.max(maxProd, lens[i] * lens[j]);
+        for (int i:map.keySet()) {
+            for (int j :map.keySet()) {
+                if ((i & j) == 0) {
+                    maxProd = Math.max(maxProd, map.get(i) * map.get(j));
                 }
             }
         }
