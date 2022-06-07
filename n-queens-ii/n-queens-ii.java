@@ -1,52 +1,52 @@
 class Solution {
     private int size;
-    private List<List<String>> solutions = new ArrayList<>();
+    private char[][] board;
+    private Set<Integer> cols = new HashSet<>();
+    private Set<Integer> diag = new HashSet<>();
+    private Set<Integer> antidiag = new HashSet<>();
     public int totalNQueens(int n) {
         size = n;
-        char[][] emptyBoard = new char[size][size];
-        for(int i=0;i<size;i++){
-            for(int j=0;j<size;j++){
-                emptyBoard[i][j] = '.';
+        board = new char[size][size];
+        for(int i=0; i< n; i++){
+            for(int j=0; j<n; j++){
+                board[i][j] = '.';
             }
         }
-        backtrack(0, new HashSet<>(), new HashSet<>(), new HashSet<>(), emptyBoard);
-        return solutions.size();
+        return backTrack(0, 0);
     }
 
-    private List<String> createBoard(char[][] board){
-        List<String> boardState = new ArrayList<>();
-        for(int row = 0; row < size ; row++){
-            String currentRow = new String(board[row]);
-            boardState.add(currentRow);
-        }
-        return boardState;
-    }
-
-    private void backtrack(int row, Set<Integer> diagnols, Set<Integer> antiDiagnols, Set<Integer> cols,
-                           char[][] board){
-        //BaseCase
-        if(row ==  size){
-            solutions.add(createBoard(board));
-            return;
-        }
-        for(int col=0; col < size; col++){
-            int currDiagonal = row - col;
-            int antiDiagonal = row + col;
-            if(cols.contains(col) || diagnols.contains(currDiagonal) || antiDiagnols.contains(antiDiagonal)){
-                continue;
+    private int backTrack(int row, int count){
+        for (int col = 0; col < size; col++) {
+            if (isNotUnderAttack(row, col)){
+                placeQueen(row, col);
+                if(row+1 == size){
+                    count +=1;
+                }else{
+                    count = backTrack(row+1, count);
+                }
+                removeQueen(row, col);
             }
-            cols.add(col);
-            diagnols.add(currDiagonal);
-            antiDiagnols.add(antiDiagonal);
-            board[row][col] = 'Q';
-
-            backtrack(row+1 , diagnols, antiDiagnols, cols, board);
-
-            cols.remove(col);
-            diagnols.remove(currDiagonal);
-            antiDiagnols.remove(antiDiagonal);
-            board[row][col] = '.';
-
         }
+        return count;
+    }
+
+    private boolean isNotUnderAttack(int row, int col){
+        if(!cols.contains(col) && !diag.contains(row+col) && !antidiag.contains(row-col)){
+            return true;
+        }
+        return false;
+    }
+
+    private void placeQueen(int row, int col){
+        board[row][col] = 'Q';
+        cols.add(col);
+        diag.add(row+col);
+        antidiag.add(row-col);
+    }
+    private void removeQueen(int row, int col){
+        board[row][col] = '.';
+        cols.remove(col);
+        diag.remove(row + col);
+        antidiag.remove(row - col);
     }
 }
