@@ -1,27 +1,19 @@
 class Solution {
     public int maximumUnits(int[][] boxTypes, int truckSize) {
         int sum = 0;
-        Map<Integer, Integer> map = new HashMap<>();
-        for(int i=0;i<boxTypes.length; i++){
-            map.put(i,boxTypes[i][1]);
+        int[] boxesvsunits = new int[1001];
+        for(int[] boxType:boxTypes){
+            boxesvsunits[boxType[1]] += boxType[0];
         }
-        List<Map.Entry<Integer, Integer>> list = new LinkedList<>(map.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>() {
-
-            @Override
-            public int compare(Map.Entry<Integer, Integer> o1, Map.Entry<Integer, Integer> o2) {
-                return o2.getValue().compareTo(o1.getValue());
-            }
-        });
-        
-        for(Map.Entry<Integer, Integer> entry: list){
-            int numBox = boxTypes[entry.getKey()][0];
-            if(numBox <= truckSize){
-                sum += numBox*entry.getValue();
-                truckSize -= numBox;
-            }else{
-                sum += truckSize*entry.getValue();
-                break;
+        for(int i=boxesvsunits.length-1; i>0; i--){
+            if(boxesvsunits[i] > 0){
+                if(boxesvsunits[i] <= truckSize){
+                    sum +=  boxesvsunits[i]*i;
+                    truckSize -= boxesvsunits[i];
+                }else{
+                    sum += i * truckSize;
+                    break;
+                }
             }
         }
         return sum;
