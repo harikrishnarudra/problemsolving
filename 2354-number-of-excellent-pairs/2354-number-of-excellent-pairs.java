@@ -2,7 +2,7 @@ class Solution {
     public long countExcellentPairs(int[] nums, int k) {
         long res = 0;
         int[] bitCnt = new int[32];
-        LinkedHashSet<Integer> set = new LinkedHashSet<>();
+        Set<Integer> set = new HashSet<>();
         for (int i = 0; i < nums.length; i++)
             set.add(nums[i]);
         Iterator<Integer> iterator = set.iterator();
