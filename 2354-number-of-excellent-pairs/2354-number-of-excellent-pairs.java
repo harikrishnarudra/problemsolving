@@ -8,7 +8,7 @@ class Solution {
         for(int a:set)
             bitCnt[Integer.bitCount(a)]++;
 
-        for(int i=0;i<bitCnt.length;i++){
+        for(int i=0;i<32;i++){
             for(int j=0;j<32;j++){
                 if(i+j >=k){
                     res += bitCnt[i] * bitCnt[j];
