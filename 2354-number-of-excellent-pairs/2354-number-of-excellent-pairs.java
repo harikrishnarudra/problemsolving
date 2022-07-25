@@ -5,10 +5,8 @@ class Solution {
         Set<Integer> set = new HashSet<>();
         for (int i = 0; i < nums.length; i++)
             set.add(nums[i]);
-        Iterator<Integer> iterator = set.iterator();
-        while (iterator.hasNext()){
-            bitCnt[Integer.bitCount(iterator.next())]++;
-        }
+        for(int a:set)
+            bitCnt[Integer.bitCount(a)]++;
 
         for(int i=0;i<bitCnt.length;i++){
             for(int j=0;j<32;j++){
