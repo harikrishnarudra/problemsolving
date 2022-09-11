@@ -1,29 +1,18 @@
 class Solution {
     public int mostFrequentEven(int[] nums) {
-        int max = -1;
-        int maxEvenElement = -1;
-        Map<Integer, Integer> map = new HashMap();
-
-        for(int i:nums){
-            if(i==0 || i%2==0){
-                if(map.containsKey(i)){
-                    map.put(i,map.get(i)+1);
-                }else{
-                    map.put(i, 1);
-                }
+        int[] arr = new int[100_000];
+        for(int num:nums){
+            ++arr[num];
+        }
+        int max = 0;
+        int result = -1;
+        for(int i=0; i< arr.length; i+=2){
+            if(max < arr[i]){
+                max = arr[i];
+                result = i;
             }
         }
-        for(Map.Entry<Integer,Integer> entry:map.entrySet()){
-            if(entry.getValue()> max){
-                max = entry.getValue();
-                maxEvenElement = entry.getKey();
-            }
-            if(entry.getValue() == max){
-               if(entry.getKey() < maxEvenElement)
-                maxEvenElement = entry.getKey();
-            }
-        }
-        return maxEvenElement;
+        return result;
         
     }
 }
