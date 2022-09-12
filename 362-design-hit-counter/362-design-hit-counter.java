@@ -1,44 +1,34 @@
 class HitCounter {
 
-    private Map<Integer, Integer> map;
+    // private Map<Integer, Integer> map;
     private Queue<Integer> queue;
     private int constantTime = 300;
 
     public HitCounter() {
-        map = new TreeMap<>();
+        // map = new TreeMap<>();
         queue = new LinkedList<>();
     }
 
     public void hit(int timestamp) {
-        map.put(timestamp, map.getOrDefault(timestamp,0)+1);
+        // map.put(timestamp, map.getOrDefault(timestamp,0)+1);
         queue.add(timestamp);
-        removeHitsBeyond(timestamp);
+        // removeHitsBeyond(timestamp);
     }
 
     public int getHits(int timestamp) {
-        removeHitsBeyond(timestamp);
+        // removeHitsBeyond(timestamp);
+        int removableTimes = timestamp - constantTime;
+        while(!queue.isEmpty()){
+            if(queue.peek() <= removableTimes){
+                queue.poll();
+            }else{
+                break;
+            }
+        }
         return queue.size();
     }
 
-    private void removeHitsBeyond(int timeStamp){
-        int removableTimes = timeStamp - constantTime;
-        List<Integer> list = new ArrayList<>();
-        for(int key:map.keySet()){
-            if(key > removableTimes){
-                break;
-            }else{
-                int cnt = map.get(key);
-                while(cnt > 0){
-                    queue.poll();
-                    cnt--;
-                }
-                list.add(key);
-            }
-        }
-        for(int i=0; i< list.size(); i++){
-            map.remove(list.get(i));
-        }
-    }
+    
 }
 
 /**
