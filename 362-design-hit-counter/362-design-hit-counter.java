@@ -1,22 +1,17 @@
 class HitCounter {
 
-    // private Map<Integer, Integer> map;
     private Queue<Integer> queue;
     private int constantTime = 300;
 
     public HitCounter() {
-        // map = new TreeMap<>();
         queue = new LinkedList<>();
     }
 
     public void hit(int timestamp) {
-        // map.put(timestamp, map.getOrDefault(timestamp,0)+1);
         queue.add(timestamp);
-        // removeHitsBeyond(timestamp);
     }
 
     public int getHits(int timestamp) {
-        // removeHitsBeyond(timestamp);
         int removableTimes = timestamp - constantTime;
         while(!queue.isEmpty()){
             if(queue.peek() <= removableTimes){
@@ -27,8 +22,6 @@ class HitCounter {
         }
         return queue.size();
     }
-
-    
 }
 
 /**
